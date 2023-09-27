@@ -1,0 +1,9 @@
+mat-toolbar {
+  padding-left: 3rem;
+}
+
+main {
+  width: 100%;
+  margin-top: 2rem;
+  text-align: center;
+}
