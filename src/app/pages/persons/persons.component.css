@@ -1,7 +1,6 @@
 mat-card {
   margin: auto;
   width: 35%;
-  display: block;
   margin-top: 2rem;
 }
 mat-form-field {
@@ -14,15 +13,14 @@ mat-card-header {
   padding-bottom: 16px;
 }
 
+.add-person-button-container {
+  width: 75%;
+  margin: auto;
+}
+
 .person-detail {
   overflow: hidden;
   display: flex;
-}
-
-.expanded-person-info {
-  margin: 2rem;
-  margin-left: 0%;
-  margin-right: 13%;
 }
 
 tr.person-row:not(.example-expanded-row):hover {
@@ -31,14 +29,6 @@ tr.person-row:not(.example-expanded-row):hover {
 
 tr.person-row:not(.example-expanded-row):active {
   background: #efefef;
-}
-
-.person-row td {
-  border-bottom-width: 0;
-}
-
-tr.detail-row {
-  height: 0;
 }
 
 .add-person-header {
@@ -64,4 +54,8 @@ td {
 
 p {
   margin: 4px;
+}
+
+.btn-person-form {
+  margin: 16px;
 }

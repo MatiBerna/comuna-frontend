@@ -1,82 +1,105 @@
 <!-- <app-person *ngFor="let person of persons" [person]="person"></app-person> -->
-<ng-container *ngIf="persons.length > 0">
+<!-- <ng-container *ngIf="persons.length > 0">
   <div class="persons-table">
     <table mat-table [dataSource]="persons" multiTemplateDataRows>
       <ng-container
         matColumnDef="{{ column }}"
         *ngFor="let column of columnsToDisplay"
       >
-        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-        <td mat-cell *matCellDef="let person">{{ person[column] }}</td>
+        <th mat-header-cell *matHeaderCellDef>{{ column[1] }}</th>
+        <td mat-cell *matCellDef="let person">{{ person[column[0]] }}</td>
       </ng-container>
 
-      <!-- boton de expandir -->
-      <ng-container matColumnDef="expand">
+       boton de expandir 
+      <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">
           &nbsp;
         </th>
         <td mat-cell *matCellDef="let person">
           <button
             mat-icon-button
-            aria-label="expand row"
+            aria-label="edit row"
             (click)="
               expandedPerson = expandedPerson === person ? null : person;
               $event.stopPropagation()
             "
           >
-            <mat-icon *ngIf="expandedPerson !== person"
-              >keyboard_arrow_down</mat-icon
-            >
-            <mat-icon *ngIf="expandedPerson === person"
-              >keyboard_arrow_up</mat-icon
-            >
+            <mat-icon>edit</mat-icon>
           </button>
         </td>
       </ng-container>
 
-      <!-- Contenido de la fila expandida -->
-      <ng-container matColumnDef="expandedDetail">
-        <td
-          mat-cell
-          *matCellDef="let person"
-          [attr.colspan]="columnsToDisplayWithExpand.length"
-        >
-          <div
-            class="person-detail"
-            [@detailExpand]="
-              person == expandedPerson ? 'expanded' : 'collapsed'
-            "
-          >
-            <div class="expanded-person-info">Email: {{ person.email }}</div>
-            <div class="expanded-person-info">Phone: {{ person.phone }}</div>
-            <div class="expanded-person-info">
-              Birthdate: {{ person.birthdate }}
-            </div>
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithEdit"></tr>
       <tr
         mat-row
-        *matRowDef="let person; columns: columnsToDisplayWithExpand"
+        *matRowDef="let person; columns: columnsToDisplayWithEdit"
         class="person-row"
         [class.expanded-row]="expandedPerson === person"
         (click)="expandedPerson = expandedPerson === person ? null : person"
-      ></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: ['expandedDetail']"
-        class="detail-row"
       ></tr>
     </table>
   </div>
 </ng-container>
 <ng-container *ngIf="persons.length === 0">
   <h1>No persons</h1>
+</ng-container> -->
+
+<div class="add-person-button-container">
+  <button mat-flat-button color="primary" (click)="openEditPerson()">
+    Añadir Socio
+  </button>
+</div>
+<ng-container *ngIf="persons.length > 0">
+  <div class="persons-table">
+    <table mat-table [dataSource]="persons">
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let person">{{ person.firstName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef>Apellido</th>
+        <td mat-cell *matCellDef="let person">{{ person.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dni">
+        <th mat-header-cell *matHeaderCellDef>DNI</th>
+        <td mat-cell *matCellDef="let person">{{ person.dni }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+          &nbsp;
+        </th>
+        <td mat-cell *matCellDef="let person">
+          <button
+            mat-icon-button
+            aria-label="edit row"
+            (click)="openEditPerson(person)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            aria-label="delete row"
+            (click)="deletePerson(person)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithEdit"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columnsToDisplayWithEdit"
+        class="person-row"
+      ></tr>
+    </table>
+  </div>
 </ng-container>
 
-<mat-card>
+<!-- <mat-card>
   <mat-card-header>
     <mat-card-title>Add a new person</mat-card-title>
   </mat-card-header>
@@ -87,7 +110,7 @@
         <input type="text" matInput />
       </mat-form-field>
     </p>
-    <!-- POSIBILIDAD DE USAR DIV PARA EL RESPONSIVE -->
+    POSIBILIDAD DE USAR DIV PARA EL RESPONSIVE
     <table class="full-name-table" cellSpacing="0">
       <tr>
         <td>
@@ -105,7 +128,7 @@
       </tr>
     </table>
     <p>
-      <mat-form-field class="full-Name-table">
+      <mat-form-field>
         <mat-label>Email</mat-label>
         <input
           type="email"
@@ -144,5 +167,8 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </p>
+    <button mat-raised-button color="primary" class="btn-person-form">
+      Añadir
+    </button>
   </form>
-</mat-card>
+</mat-card> -->

@@ -17,8 +17,9 @@ import { PersonComponent } from './../../components/person/person.component';
 import { Person } from './../../models/person.model';
 import { Response } from './../../models/response.model';
 import { CommonModule } from '@angular/common';
-import { PersonsService } from './../../services/persons/persons.service';
+import { PersonsService } from 'src/app/services/persons/persons.service';
 import { MaterialModule } from 'src/app/material.module';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
@@ -44,22 +45,67 @@ import { MaterialModule } from 'src/app/material.module';
   styleUrls: ['./persons.component.css'],
 })
 export class PersonsComponent {
-  constructor(public personsService: PersonsService) {}
+  constructor(
+    public personsService: PersonsService,
+    public dialog: MatDialog
+  ) {}
   persons: Person[] = [];
   message: string = '';
   columnsToDisplay: string[] = ['firstName', 'lastName', 'dni'];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
-  expandedPerson: Person | null = null;
+  columnsToDisplayWithEdit = [...this.columnsToDisplay, 'edit'];
+  selectedPerson: Person = {
+    id: '',
+    dni: '',
+    firstName: '',
+    lastName: '',
+    phone: undefined,
+    email: '',
+    birthdate: new Date(),
+  };
 
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-
-  ngOnInit() {
+  getAllPersons() {
     this.personsService.getAll().subscribe((res: Response) => {
       this.persons = res.data;
       this.message = res.message;
+    });
+  }
+
+  ngOnInit() {
+    this.getAllPersons();
+  }
+
+  openEditPerson(person?: Person) {
+    if (person) {
+      this.selectedPerson = person;
+    } else {
+      this.selectedPerson = {
+        id: '',
+        dni: '',
+        firstName: '',
+        lastName: '',
+        phone: undefined,
+        email: '',
+        birthdate: new Date(),
+      };
+    }
+
+    const dialogRef = this.dialog.open(PersonComponent, {
+      data: this.selectedPerson,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result) {
+        this.personsService.addOrEdit(result).subscribe((res: Response) => {
+          this.getAllPersons();
+        });
+      }
+    });
+  }
+
+  deletePerson(person: Person) {
+    this.personsService.delete(person).subscribe((res) => {
+      console.log(res);
+      this.getAllPersons();
     });
   }
 }
