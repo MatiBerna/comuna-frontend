@@ -10,12 +10,12 @@
 
 export class Person {
   constructor(
-    public id: string,
-    public dni: string,
-    public firstName: string,
-    public lastName: string,
-    public phone: string | undefined,
-    public email: string,
-    public birthdate: Date
+    public _id: string | null,
+    public dni: string | null,
+    public firstName: string | null,
+    public lastName: string | null,
+    public phone: string | undefined | null,
+    public email: string | null,
+    public birthdate: Date | null
   ) {}
 }

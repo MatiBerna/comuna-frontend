@@ -6,30 +6,19 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  FormControl,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { PersonComponent } from './../../components/person/person.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { of } from 'rxjs';
 
+import { PersonComponent } from './../../components/person/person.component';
 import { Person } from './../../models/person.model';
 import { Response } from './../../models/response.model';
 import { CommonModule } from '@angular/common';
 import { PersonsService } from 'src/app/services/persons/persons.service';
 import { MaterialModule } from 'src/app/material.module';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
-  imports: [
-    PersonComponent,
-    CommonModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
+  imports: [PersonComponent, CommonModule, MaterialModule],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -54,13 +43,13 @@ export class PersonsComponent {
   columnsToDisplay: string[] = ['firstName', 'lastName', 'dni'];
   columnsToDisplayWithEdit = [...this.columnsToDisplay, 'edit'];
   selectedPerson: Person = {
-    id: '',
-    dni: '',
-    firstName: '',
-    lastName: '',
+    _id: null,
+    dni: null,
+    firstName: null,
+    lastName: null,
     phone: undefined,
-    email: '',
-    birthdate: new Date(),
+    email: null,
+    birthdate: null,
   };
 
   getAllPersons() {
@@ -74,31 +63,27 @@ export class PersonsComponent {
     this.getAllPersons();
   }
 
-  openEditPerson(person?: Person) {
+  openEditPerson(person?: Person, messageToSend?: string) {
     if (person) {
-      this.selectedPerson = person;
+      this.selectedPerson = Object.assign({}, person);
     } else {
       this.selectedPerson = {
-        id: '',
-        dni: '',
-        firstName: '',
-        lastName: '',
+        _id: null,
+        dni: null,
+        firstName: null,
+        lastName: null,
         phone: undefined,
-        email: '',
-        birthdate: new Date(),
+        email: null,
+        birthdate: null,
       };
     }
 
     const dialogRef = this.dialog.open(PersonComponent, {
       data: this.selectedPerson,
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      if (result) {
-        this.personsService.addOrEdit(result).subscribe((res: Response) => {
-          this.getAllPersons();
-        });
-      }
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.getAllPersons();
     });
   }
 
